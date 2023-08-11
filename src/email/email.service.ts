@@ -1,17 +1,15 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { MailerService } from '@nestjs-modules/mailer'
-import { ConfigService } from '@nestjs/config/dist'
+import { EmailData } from './model/email.model'
 
 @Injectable()
 export class EmailService {
   constructor(
-    private readonly mailService: MailerService,
-    private readonly config: ConfigService
+    private readonly mailService: MailerService
   ) { }
 
-  async sendEmail(emailData: any): Promise<string> {
+  async sendEmail(emailData: EmailData): Promise<string> {
     const { name, email, message, language, code } = emailData
-    const newMessage = emailData["message"]
 
     if (code !== process.env.CLI_PASSWORD)
       throw new BadRequestException('Password from client is incorrect')
@@ -42,7 +40,7 @@ export class EmailService {
     const emailNofitication = {
       to: 'cortes.ivan353@gmail.com',
       subject: `Client: ${name}, email: ${email}, asked for a contact`,
-      text: `${newMessage}. Language: ${language}`
+      text: `${message}. Language: ${language}`
     }
 
     await this.mailService.sendMail(emailMessage)
