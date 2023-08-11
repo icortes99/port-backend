@@ -12,11 +12,11 @@ export class EmailService {
     const { name, email, message, language, code } = emailData
 
     if (code !== process.env.CLI_PASSWORD)
-      throw new BadRequestException('Password from client is incorrect')
+      throw new BadRequestException('Secret code is incorrect')
 
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
     if (!emailRegex.test(email))
-      throw new BadRequestException('Client password is incorrect')
+      throw new BadRequestException('Client email format is incorrect')
 
     let subj = `Thank you for reaching out to me ${name}!`
     let txt = 'I really appreciate your interest in my skills. Briefly, I will be contacting you.'
