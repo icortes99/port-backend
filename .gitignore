@@ -37,3 +37,4 @@ lerna-debug.log*
 # confidential data
 .env
 /env
+.vercel
